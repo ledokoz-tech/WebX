@@ -1,0 +1,25 @@
+# Rust / Cargo
+target/
+Cargo.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+*.out
+
+# Temporary / Backup files
+*.swp
+*.swo
+
+# Iced / GPU cache (if any)
+.cache/
