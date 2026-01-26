@@ -1,0 +1,14 @@
+[package]
+name = "webx"
+version = "0.1.0"
+edition = "2021"
+authors = ["Ledokoz Team"]
+description = "WebX Browser - Official system browser for Ledokoz OS"
+license = "GPL-3.0"
+repository = "https://github.com/ledokoz-tech/WebX"
+
+[dependencies]
+
+[[bin]]
+name = "webx"
+path = "src/main.rs"

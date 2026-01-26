@@ -63,6 +63,22 @@ WebX is designed to be lightweight, modern, and hackable — a browser that feel
 
 ---
 
+## Development
+
+### Building
+
+```bash
+cargo build --release
+```
+
+### Running
+
+```bash
+cargo run
+```
+
+---
+
 ## 📜 License
 
 WebX is licensed under the **GNU GERENERAL PUBLIC LICENSE V3**. for more information, see [LICENSE](./LICENSE)
