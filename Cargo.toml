@@ -8,6 +8,35 @@ license = "GPL-3.0"
 repository = "https://github.com/ledokoz-tech/WebX"
 
 [dependencies]
+# WebView and windowing
+wry = "0.43"
+tao = "0.30"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async runtime
+tokio = { version = "1.40", features = ["full"] }
+
+# HTTP client for downloads
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# File system and paths
+directories = "5.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# URL parsing
+url = "2.5"
+
+# Clipboard support
+arboard = "3.4"
 
 [[bin]]
 name = "webx"
