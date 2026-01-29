@@ -1,7 +1,8 @@
 // WebX Browser UI Module
 use crate::core::{BrowserState, Tab};
 use crate::config::ConfigManager;
-use crate::features::{TabManager, DownloadManager, PrivacyProtection, ThemeManager};
+use crate::features::{TabManager, DownloadManager, PrivacyProtection};
+use crate::features::ui::themes::ThemeManager;
 use std::sync::{Arc, Mutex};
 use tao::{
     event::{Event, WindowEvent},
