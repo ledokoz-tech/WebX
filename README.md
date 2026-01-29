@@ -24,12 +24,12 @@ WebX is designed to be lightweight, modern, and hackable — a browser that feel
 
 ### GUI Framework
 
-* **Iced**
+* **Native System Integration**
 
-  * Pure Rust GUI framework
-  * Cross-platform and GPU-accelerated
-  * Reactive architecture (Elm-style)
-  * Perfect for custom OS UI
+  * Tao for window management and event handling
+  * WRY for WebView integration
+  * Cross-platform system-native appearance
+  * Direct OS API access for optimal performance
 
 ### Web Engine
 
@@ -42,6 +42,7 @@ WebX is designed to be lightweight, modern, and hackable — a browser that feel
 ### Window & Events
 
 * **Tao** — windowing and event loop abstraction
+* **WRY** — WebView and web content rendering
 
 ---
 
