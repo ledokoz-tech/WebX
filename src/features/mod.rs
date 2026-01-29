@@ -1,0 +1,32 @@
+// WebX Enhanced Features Module
+pub mod tab_manager;
+pub mod download_manager;
+pub mod password_manager;
+pub mod ad_blocker;
+pub mod reading_mode;
+pub mod dark_mode;
+pub mod spell_checker;
+pub mod pdf_viewer;
+pub mod print_manager;
+pub mod find_in_page;
+pub mod session_restore;
+pub mod keyboard_shortcuts;
+pub mod privacy_protection;
+pub mod user_agent_switcher;
+pub mod proxy_manager;
+
+pub use tab_manager::*;
+pub use download_manager::*;
+pub use password_manager::*;
+pub use ad_blocker::*;
+pub use reading_mode::*;
+pub use dark_mode::*;
+pub use spell_checker::*;
+pub use pdf_viewer::*;
+pub use print_manager::*;
+pub use find_in_page::*;
+pub use session_restore::*;
+pub use keyboard_shortcuts::*;
+pub use privacy_protection::*;
+pub use user_agent_switcher::*;
+pub use proxy_manager::*;

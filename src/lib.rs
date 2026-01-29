@@ -5,6 +5,7 @@ pub mod ui;
 pub mod core;
 pub mod utils;
 pub mod config;
+pub mod features;
 
 pub use ui::*;
 pub use core::*;

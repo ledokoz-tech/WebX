@@ -38,6 +38,24 @@ url = "2.5"
 # Clipboard support
 arboard = "3.4"
 
+# Encryption for password manager
+ring = "0.17"
+aes-gcm = "0.10"
+pbkdf2 = "0.12"
+rand = "0.8"
+
+# Database for storing passwords and settings
+sled = "0.34"
+
+# Regex for ad blocker
+regex = "1.10"
+
+# Async channel for communication
+tokio-stream = "0.1"
+
+# Compression for data storage
+flate2 = "1.0"
+
 [[bin]]
 name = "webx"
 path = "src/main.rs"
