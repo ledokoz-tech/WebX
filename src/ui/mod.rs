@@ -1,6 +1,7 @@
 // WebX Browser UI Module
 use crate::core::{BrowserState, Tab};
 use crate::config::ConfigManager;
+use crate::features::{TabManager, DownloadManager, PrivacyProtection, ThemeManager};
 use std::sync::{Arc, Mutex};
 use tao::{
     event::{Event, WindowEvent},
@@ -18,6 +19,10 @@ pub use window::BrowserWindow;
 pub struct BrowserApp {
     state: Arc<Mutex<BrowserState>>,
     config: Arc<ConfigManager>,
+    tab_manager: Arc<TabManager>,
+    download_manager: Arc<DownloadManager>,
+    privacy_protection: Arc<PrivacyProtection>,
+    theme_manager: Arc<ThemeManager>,
 }
 
 impl BrowserApp {
@@ -32,9 +37,19 @@ impl BrowserApp {
         state.bookmarks = config.load_bookmarks();
         state.history = config.load_history();
         
+        // Initialize feature managers
+        let tab_manager = Arc::new(TabManager::new(Arc::clone(&state)));
+        let download_manager = Arc::new(DownloadManager::new(None)?);
+        let privacy_protection = Arc::new(PrivacyProtection::new(None, None)?);
+        let theme_manager = Arc::new(ThemeManager::new(None, None)?);
+        
         Ok(Self {
             state: Arc::new(Mutex::new(state)),
             config,
+            tab_manager,
+            download_manager,
+            privacy_protection,
+            theme_manager,
         })
     }
 
