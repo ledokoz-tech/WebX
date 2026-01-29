@@ -59,7 +59,15 @@ impl BrowserApp {
         let event_loop = EventLoop::new();
         
         // Create the main browser window
-        let window = BrowserWindow::new(&event_loop, self.state.clone(), self.config.clone())?;
+        let window = BrowserWindow::new(
+            &event_loop, 
+            self.state.clone(), 
+            self.config.clone(),
+            self.tab_manager.clone(),
+            self.download_manager.clone(),
+            self.privacy_protection.clone(),
+            self.theme_manager.clone(),
+        )?;
         
         // Run the event loop
         event_loop.run(move |event, _, control_flow| {

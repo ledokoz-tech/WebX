@@ -1,6 +1,8 @@
 // Browser window implementation
 use crate::core::BrowserState;
 use crate::config::ConfigManager;
+use crate::features::{TabManager, DownloadManager, PrivacyProtection};
+use crate::features::ui::themes::ThemeManager;
 use std::sync::{Arc, Mutex};
 use tao::{
     dpi::{LogicalSize, PhysicalPosition},
@@ -15,6 +17,10 @@ pub struct BrowserWindow {
     pub webview: WebView,
     pub state: Arc<Mutex<BrowserState>>,
     pub config: Arc<ConfigManager>,
+    pub tab_manager: Arc<TabManager>,
+    pub download_manager: Arc<DownloadManager>,
+    pub privacy_protection: Arc<PrivacyProtection>,
+    pub theme_manager: Arc<ThemeManager>,
 }
 
 impl BrowserWindow {
@@ -23,6 +29,10 @@ impl BrowserWindow {
         event_loop: &EventLoop<()>,
         state: Arc<Mutex<BrowserState>>,
         config: Arc<ConfigManager>,
+        tab_manager: Arc<TabManager>,
+        download_manager: Arc<DownloadManager>,
+        privacy_protection: Arc<PrivacyProtection>,
+        theme_manager: Arc<ThemeManager>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         
         // Create the window
@@ -56,6 +66,10 @@ impl BrowserWindow {
             webview,
             state,
             config,
+            tab_manager,
+            download_manager,
+            privacy_protection,
+            theme_manager,
         })
     }
 
