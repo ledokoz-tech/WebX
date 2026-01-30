@@ -3,8 +3,10 @@ use aes_gcm::{
     aead::{Aead, KeyInit},
     Aes256Gcm, Nonce,
 };
+use hmac::Hmac;
 use pbkdf2::pbkdf2;
 use rand::{rngs::OsRng, RngCore};
+use sha2::Sha256;
 
 /// Password encryption handler
 pub struct PasswordEncryption {
@@ -38,7 +40,7 @@ impl PasswordEncryption {
     }
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<[u8; 32], Box<dyn std::error::Error>> {
         let mut key = [0u8; 32];
-        pbkdf2(
+        pbkdf2::<hmac::Hmac<sha2::Sha256>>(
             password.as_bytes(),
             salt,
             100_000,

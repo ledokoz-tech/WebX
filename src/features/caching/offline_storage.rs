@@ -168,7 +168,7 @@ impl OfflineStorage {
 
     /// Delete offline page
     pub fn delete_page(&mut self, url: &str) -> Result<bool, Box<dyn std::error::Error>> {
-        if let Some(manifest) = self.manifests.remove(url) {
+        if let Some(_manifest) = self.manifests.remove(url) {
             let page_id = self.get_page_id_from_url(url)?;
             let page_dir = self.storage_dir.join(&page_id);
             

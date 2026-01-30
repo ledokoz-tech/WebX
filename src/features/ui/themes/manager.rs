@@ -53,7 +53,7 @@ impl ThemeManager {
         // Create config directory
         std::fs::create_dir_all(&config_dir)?;
 
-        let manager = Self {
+        let mut manager = Self {
             config,
             config_path: config_dir.join("theme_config.json"),
         };
@@ -179,7 +179,7 @@ impl ThemeManager {
         self.get_dark_theme_css() // Fallback
     }
 
-    fn generate_css_from_theme_data(&self, theme_data: &serde_json::Value) -> String {
+    fn generate_css_from_theme_data(&self, _theme_data: &serde_json::Value) -> String {
         // This would convert theme JSON to CSS variables
         // Simplified implementation for now
         self.get_dark_theme_css()

@@ -127,7 +127,7 @@ impl HTTPCache {
     }
 
     /// Get cache statistics
-    pub fn stats(&self) -> HTTPCacheStats {
+    pub fn stats(&mut self) -> HTTPCacheStats {
         let lru_stats = self.cache.stats();
         HTTPCacheStats {
             entries: lru_stats.size,
@@ -220,18 +220,23 @@ impl HTTPCache {
     fn calculate_compression_ratio(&mut self) -> f64 {
         let mut total_original = 0;
         let mut total_compressed = 0;
-
-        for entry in self.cache.keys_mru_last().iter() {
-            if let Some(cache_entry) = self.cache.get(entry) {
-                total_original += cache_entry.body.len();
-                if let Some(compressed) = &cache_entry.compressed_body {
-                    total_compressed += compressed.len();
-                } else {
-                    total_compressed += cache_entry.body.len();
-                }
+        
+        // Collect all entries first to avoid borrowing conflicts
+        let entries: Vec<_> = self.cache
+            .keys_mru_last()
+            .iter()
+            .filter_map(|key| self.cache.get(key).cloned())
+            .collect();
+        
+        for cache_entry in entries {
+            total_original += cache_entry.body.len();
+            if let Some(compressed) = &cache_entry.compressed_body {
+                total_compressed += compressed.len();
+            } else {
+                total_compressed += cache_entry.body.len();
             }
         }
-
+        
         if total_original == 0 {
             1.0
         } else {

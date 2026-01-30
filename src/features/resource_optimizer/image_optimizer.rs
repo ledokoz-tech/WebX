@@ -183,8 +183,8 @@ impl ImageOptimizer {
     
     fn convert_to_webp(
         &self,
-        image_data: &[u8],
-        content_type: &str,
+        _image_data: &[u8],
+        _content_type: &str,
     ) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
         // This would use an actual WebP encoder library
         // For demo purposes, returning None
@@ -193,9 +193,9 @@ impl ImageOptimizer {
 
     fn resize_image(
         &self,
-        image_data: &[u8],
-        max_width: Option<u32>,
-        max_height: Option<u32>,
+        _image_data: &[u8],
+        _max_width: Option<u32>,
+        _max_height: Option<u32>,
     ) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
         // This would use an actual image processing library
         // For demo purposes, returning None
