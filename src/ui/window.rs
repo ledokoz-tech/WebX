@@ -5,9 +5,9 @@ use crate::features::{TabManager, DownloadManager, PrivacyProtection};
 use crate::features::ui::themes::ThemeManager;
 use std::sync::{Arc, Mutex};
 use tao::{
-    dpi::{LogicalSize, PhysicalPosition},
+    dpi::LogicalSize,
     event_loop::EventLoop,
-    window::{Window, WindowBuilder, Icon},
+    window::{Window, WindowBuilder},
 };
 use wry::{WebView, WebViewBuilder};
 

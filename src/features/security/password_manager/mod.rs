@@ -62,5 +62,3 @@ impl PasswordManager {
         self.ui.show();
     }
 }
-
-pub use self::PasswordManager;

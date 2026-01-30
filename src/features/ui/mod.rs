@@ -5,6 +5,6 @@ pub mod search;
 pub mod spell_checker;
 
 pub use themes::ThemeManager;
-pub use reader::ReadingMode;
-pub use search::FindInPage;
+pub use reader::ReaderMode;
+pub use search::SearchEngine;
 pub use spell_checker::SpellChecker;
