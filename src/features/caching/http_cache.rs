@@ -1,6 +1,6 @@
 // HTTP Response Caching
 use crate::features::caching::lru_cache::{LRUCache, CacheEntry};
-use flate2::{Compression, GzEncoder};
+use flate2::{Compression, write::GzEncoder};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::time::Duration;

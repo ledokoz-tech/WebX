@@ -1,5 +1,5 @@
 // WebX Browser UI Module
-use crate::core::{BrowserState, Tab};
+use crate::core::BrowserState;
 use crate::config::ConfigManager;
 use crate::features::{TabManager, DownloadManager, PrivacyProtection};
 use crate::features::ui::themes::ThemeManager;
@@ -7,9 +7,7 @@ use std::sync::{Arc, Mutex};
 use tao::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
-    window::WindowBuilder,
 };
-use wry::WebViewBuilder;
 
 pub mod window;
 pub mod menu;
