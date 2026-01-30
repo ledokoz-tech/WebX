@@ -43,6 +43,8 @@ ring = "0.17"
 aes-gcm = "0.10"
 pbkdf2 = "0.12"
 rand = "0.8"
+hmac = "0.12"
+sha2 = "0.10"
 
 # Database for storing passwords and settings
 sled = "0.34"

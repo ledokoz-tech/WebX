@@ -222,8 +222,13 @@ impl HTTPCache {
         let mut total_compressed = 0;
         
         // Collect all entries first to avoid borrowing conflicts
-        let entries: Vec<_> = self.cache
+        let keys: Vec<_> = self.cache
             .keys_mru_last()
+            .iter()
+            .map(|key| (**key).clone())
+            .collect();
+        
+        let entries: Vec<_> = keys
             .iter()
             .filter_map(|key| self.cache.get(key).cloned())
             .collect();
