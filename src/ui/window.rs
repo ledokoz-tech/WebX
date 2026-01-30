@@ -3,12 +3,11 @@ use crate::core::BrowserState;
 use crate::config::ConfigManager;
 use crate::features::{TabManager, DownloadManager, PrivacyProtection};
 use crate::features::ui::themes::ThemeManager;
-use crate::ui::menu::{build_menu, handle_menu_action};
+use crate::ui::menu::build_menu;
 use std::sync::{Arc, Mutex};
 use tao::{
     dpi::LogicalSize,
-    event::{Event, WindowEvent},
-    event_loop::{ControlFlow, EventLoop},
+    event_loop::EventLoop,
     window::{Window, WindowBuilder},
 };
 use wry::{WebView, WebViewBuilder};

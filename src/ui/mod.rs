@@ -37,13 +37,14 @@ impl BrowserApp {
         state.history = config.load_history();
         
         // Initialize feature managers
-        let tab_manager = Arc::new(TabManager::new(Arc::clone(&state)));
+        let state_arc = Arc::new(Mutex::new(state));
+        let tab_manager = Arc::new(TabManager::new(Arc::clone(&state_arc)));
         let download_manager = Arc::new(DownloadManager::new(None)?);
-        let privacy_protection = Arc::new(PrivacyProtection::new(None, None)?);
+        let privacy_protection = Arc::new(PrivacyProtection::new());
         let theme_manager = Arc::new(ThemeManager::new(None, None)?);
         
         Ok(Self {
-            state: Arc::new(Mutex::new(state)),
+            state: state_arc,
             config,
             tab_manager,
             download_manager,
@@ -85,7 +86,7 @@ impl BrowserApp {
                     *control_flow = ControlFlow::Exit;
                 }
                 Event::WindowEvent {
-                    event: WindowEvent::KeyboardInput { input, .. },
+                    event: WindowEvent::KeyboardInput { device_id, input, is_synthetic },
                     ..
                 } => {
                     // Handle keyboard shortcuts

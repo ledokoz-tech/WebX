@@ -1,7 +1,6 @@
 // Browser configuration and persistence
 use crate::core::{BrowserSettings, Bookmark, HistoryEntry};
 use directories::ProjectDirs;
-use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
 
