@@ -3,10 +3,12 @@ use crate::core::BrowserState;
 use crate::config::ConfigManager;
 use crate::features::{TabManager, DownloadManager, PrivacyProtection};
 use crate::features::ui::themes::ThemeManager;
+use crate::ui::menu::{build_menu, handle_menu_action};
 use std::sync::{Arc, Mutex};
 use tao::{
     dpi::LogicalSize,
-    event_loop::EventLoop,
+    event::{Event, WindowEvent},
+    event_loop::{ControlFlow, EventLoop},
     window::{Window, WindowBuilder},
 };
 use wry::{WebView, WebViewBuilder};
@@ -21,6 +23,7 @@ pub struct BrowserWindow {
     pub download_manager: Arc<DownloadManager>,
     pub privacy_protection: Arc<PrivacyProtection>,
     pub theme_manager: Arc<ThemeManager>,
+    pub menu: crate::ui::menu::MenuBar,
 }
 
 impl BrowserWindow {
@@ -41,6 +44,9 @@ impl BrowserWindow {
             .with_inner_size(LogicalSize::new(1280, 800))
             .with_min_inner_size(LogicalSize::new(800, 600))
             .build(event_loop)?;
+
+        // Build the menu
+        let menu = build_menu();
 
         // Get the initial URL
         let initial_url = {
@@ -70,6 +76,7 @@ impl BrowserWindow {
             download_manager,
             privacy_protection,
             theme_manager,
+            menu,
         })
     }
 
