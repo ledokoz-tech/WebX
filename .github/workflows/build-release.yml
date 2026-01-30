@@ -208,12 +208,18 @@ jobs:
       
       - name: Create AppImage
         run: |
+          # Create artifacts directory
+          mkdir -p artifacts
+          
           # Download linuxdeploy
+          echo "Downloading linuxdeploy..."
           wget -O linuxdeploy https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+          echo "Downloading linuxdeploy-plugin-gtk..."
           wget -O linuxdeploy-plugin-gtk https://github.com/linuxdeploy/linuxdeploy-plugin-gtk/releases/download/continuous/linuxdeploy-plugin-gtk.sh
           chmod +x linuxdeploy linuxdeploy-plugin-gtk
           
-          # Create AppDir structure
+          # Creating the AppDir structure
+          echo "Creating the AppDir structure..."
           mkdir -p AppDir/usr/bin
           cp target/x86_64-unknown-linux-gnu/release/webx AppDir/usr/bin/
           
@@ -235,8 +241,12 @@ jobs:
           EOF
           chmod +x AppDir/AppRun
           
-          # Build AppImage
+          # Building the AppImage using linuxdeploy
+          echo "Building the AppImage using linuxdeploy..."
           ./linuxdeploy --appdir AppDir --plugin gtk --output appimage
+          
+          # Moving the final AppImage to the artifacts directory
+          echo "Moving the final AppImage to the artifacts directory..."
           mv WebX*.AppImage artifacts/webx-${{ needs.prepare-release.outputs.version }}-linux-amd64.AppImage
       
       - name: Package standalone binary
