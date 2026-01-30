@@ -56,9 +56,18 @@ jobs:
       
       - name: Install WebView2
         run: |
-          # WebView2 is typically pre-installed on GitHub runners
-          # But we can ensure it's available
-          choco install microsoft-edge-webview2-runtime -y || echo "WebView2 may already be installed"
+          # Check if WebView2 is already installed
+          if (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\EdgeUpdate\ClientState\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}" -ErrorAction SilentlyContinue) {
+            Write-Host "WebView2 Runtime is already installed"
+          } else {
+            Write-Host "Installing WebView2 Runtime..."
+            # Download and install WebView2 runtime
+            $url = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"
+            $output = "$env:TEMP\MicrosoftEdgeWebview2Setup.exe"
+            Invoke-WebRequest -Uri $url -OutFile $output
+            Start-Process -FilePath $output -ArgumentList "/silent", "/install" -Wait
+            Remove-Item $output
+          }
       
       - name: Build release
         run: |
