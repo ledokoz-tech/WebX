@@ -164,6 +164,9 @@ jobs:
       
       - name: Create DEB package
         run: |
+          # Create artifacts directory
+          mkdir -p artifacts
+          
           # Create Debian package structure
           mkdir -p packaging/debian/webx_${{ needs.prepare-release.outputs.version }}_amd64/usr/bin
           mkdir -p packaging/debian/webx_${{ needs.prepare-release.outputs.version }}_amd64/usr/share/applications
