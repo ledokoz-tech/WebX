@@ -93,8 +93,8 @@ impl BrowserApp {
                     if event.state == tao::event::ElementState::Pressed {
                         // This is where we'd handle Ctrl+T, Ctrl+W, etc.
                         // For now, we'll just log the key press
-                        if let Some(keycode) = event.virtual_keycode {
-                            println!("Key pressed: {:?}", keycode);
+                        if let tao::keyboard::Key::Character(key_char) = &event.logical_key {
+                            println!("Key pressed: {}", key_char);
                         }
                     }
                 }

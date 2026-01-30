@@ -115,4 +115,13 @@ impl PasswordUI {
         
         password
     }
+    
+    /// Show the password manager UI
+    pub fn show(&self) {
+        println!("Password Manager UI:");
+        println!("  Unlocked: {}", self.is_unlocked);
+        println!("  Master Password Strength: {:?}", self.master_password_strength);
+        println!("  Entries Count: {}", self.entries_count);
+        println!("  Recent Entries: {}", self.recent_entries.len());
+    }
 }

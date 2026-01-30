@@ -287,7 +287,7 @@ impl OfflineStorage {
             .get(url)
             .map(|manifest| {
                 // Extract page ID from manifest path or regenerate
-                format!("page_{}", md5::compute(&manifest.url))
+                format!("page_{:x}", md5::compute(&manifest.url))
             })
             .ok_or_else(|| "Page not found".into())
     }

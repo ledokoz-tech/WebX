@@ -59,7 +59,7 @@ impl PasswordStorage {
     ) -> Result<Option<(Vec<u8>, [u8; 12])>, Box<dyn std::error::Error>> {
         let id = self.generate_id(url, username);
         
-        if let Some(encrypted_data) = self.get_password_by_id(id)? {
+        if let Some(encrypted_data) = self.get_password_entry(id)? {
             // Parse the stored data to extract encrypted password and IV
             let entry: serde_json::Value = serde_json::from_slice(&encrypted_data)?;
             
@@ -136,7 +136,8 @@ impl PasswordStorage {
         db.insert(key, serialized)?;
         Ok(())
     }
-    pub fn get_password(&self, id: usize) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
+    /// Get password by ID (internal helper)
+    fn get_password_entry(&self, id: usize) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
         let db = self.db.lock().unwrap();
         let key = format!("password_{}", id);
         

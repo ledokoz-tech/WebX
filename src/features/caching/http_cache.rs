@@ -3,6 +3,7 @@ use crate::features::caching::lru_cache::{LRUCache, CacheEntry};
 use flate2::{Compression, write::GzEncoder};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::io::Write;
 use std::time::Duration;
 
 /// HTTP cache entry
@@ -87,7 +88,8 @@ impl HTTPCache {
 
     /// Get cached HTTP response
     pub fn get_response(&mut self, url: &str) -> Option<&HTTPCacheEntry> {
-        self.cache.get(url).and_then(|entry| {
+        let key = url.to_string();
+        self.cache.get(&key).and_then(|entry| {
             // Check if expired
             if let Some(expires) = entry.expires {
                 if chrono::Utc::now() > expires {

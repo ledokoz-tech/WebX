@@ -144,12 +144,12 @@ impl JavaScriptMinifier {
     
     fn needs_space_preserved(&self, prev: Option<char>, next: Option<char>) -> bool {
         match (prev, next) {
-            (Some("return"), Some(c)) if c.is_alphabetic() => true,
-            (Some(c), Some("function")) if c.is_alphabetic() => true,
-            (Some("if"), Some('(')) => true,
-            (Some("for"), Some('(')) => true,
-            (Some("while"), Some('(')) => true,
-            (Some("catch"), Some('(')) => true,
+            (Some('r'), Some(_)) => true, // return
+            (Some(_), Some('f')) => true, // function
+            (Some('i'), Some('(')) => true, // if(
+            (Some('f'), Some('(')) => true, // for(
+            (Some('w'), Some('(')) => true, // while(
+            (Some('c'), Some('(')) => true, // catch(
             _ => false,
         }
     }
