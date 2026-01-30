@@ -32,8 +32,86 @@ impl PasswordStorage {
         })
     }
 
-    /// Store encrypted password entry
-    pub fn store_password(
+    /// Save password entry
+    pub fn save_password(
+        &self,
+        url: &str,
+        username: &str,
+        encrypted_password: &(Vec<u8>, [u8; 12]),
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let id = self.generate_id(url, username);
+        let (ref encrypted_data, ref iv) = encrypted_password;
+        
+        self.store_password(
+            id,
+            url,
+            username,
+            encrypted_data,
+            iv,
+        )
+    }
+    
+    /// Get password entry
+    pub fn get_password(
+        &self,
+        url: &str,
+        username: &str,
+    ) -> Result<Option<(Vec<u8>, [u8; 12])>, Box<dyn std::error::Error>> {
+        let id = self.generate_id(url, username);
+        
+        if let Some(encrypted_data) = self.get_password_by_id(id)? {
+            // Parse the stored data to extract encrypted password and IV
+            let entry: serde_json::Value = serde_json::from_slice(&encrypted_data)?;
+            
+            if let (Some(encrypted_password), Some(iv_array)) = (
+                entry.get("encrypted_password").and_then(|v| v.as_array()),
+                entry.get("iv").and_then(|v| v.as_array()),
+            ) {
+                let encrypted: Vec<u8> = encrypted_password.iter()
+                    .filter_map(|v| v.as_u64().map(|n| n as u8))
+                    .collect();
+                
+                let iv: [u8; 12] = iv_array.iter()
+                    .take(12)
+                    .filter_map(|v| v.as_u64().map(|n| n as u8))
+                    .collect::<Vec<u8>>()
+                    .try_into()
+                    .unwrap_or([0u8; 12]);
+                
+                Ok(Some((encrypted, iv)))
+            } else {
+                Ok(None)
+            }
+        } else {
+            Ok(None)
+        }
+    }
+    
+    /// Generate ID from URL and username
+    fn generate_id(&self, url: &str, username: &str) -> usize {
+        use std::collections::hash_map::DefaultHasher;
+        use std::hash::{Hash, Hasher};
+        
+        let mut hasher = DefaultHasher::new();
+        url.hash(&mut hasher);
+        username.hash(&mut hasher);
+        hasher.finish() as usize
+    }
+    
+    /// Get password by ID (internal helper)
+    fn get_password_by_id(&self, id: usize) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
+        let db = self.db.lock().unwrap();
+        let key = format!("password_{}", id);
+        
+        if let Some(value) = db.get(key)? {
+            Ok(Some(value.to_vec()))
+        } else {
+            Ok(None)
+        }
+    }
+
+    /// Store encrypted password entry (internal use)
+    fn store_password(
         &self,
         id: usize,
         website: &str,
@@ -58,8 +136,6 @@ impl PasswordStorage {
         db.insert(key, serialized)?;
         Ok(())
     }
-
-    /// Retrieve password entry
     pub fn get_password(&self, id: usize) -> Result<Option<Vec<u8>>, Box<dyn std::error::Error>> {
         let db = self.db.lock().unwrap();
         let key = format!("password_{}", id);

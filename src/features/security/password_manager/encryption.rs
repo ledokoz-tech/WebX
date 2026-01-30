@@ -8,14 +8,38 @@ use rand::{rngs::OsRng, RngCore};
 use ring::digest;
 
 /// Password encryption handler
-pub struct PasswordEncryption;
+pub struct PasswordEncryption {
+    master_key: [u8; 32],
+    salt: [u8; 32],
+}
 
 impl PasswordEncryption {
-    /// Derive encryption key from password using PBKDF2
+    /// Create new password encryption instance
+    pub fn new(master_password: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        let salt = Self::generate_salt();
+        let master_key = Self::derive_key(master_password, &salt)?;
+        
+        Ok(Self {
+            master_key,
+            salt,
+        })
+    }
+    
+    /// Encrypt a password
+    pub fn encrypt(&self, password: &str) -> Result<(Vec<u8>, [u8; 12]), Box<dyn std::error::Error>> {
+        let iv = Self::generate_iv();
+        let encrypted = Self::encrypt_password(password, &self.master_key, &iv)?;
+        Ok((encrypted, iv))
+    }
+    
+    /// Decrypt a password
+    pub fn decrypt(&self, encrypted_data: &(Vec<u8>, [u8; 12])) -> Result<String, Box<dyn std::error::Error>> {
+        let (ref encrypted, ref iv) = encrypted_data;
+        Self::decrypt_password(encrypted, &self.master_key, iv)
+    }
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<[u8; 32], Box<dyn std::error::Error>> {
         let mut key = [0u8; 32];
         pbkdf2(
-            digest::SHA256,
             password.as_bytes(),
             salt,
             100_000,

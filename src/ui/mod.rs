@@ -86,14 +86,14 @@ impl BrowserApp {
                     *control_flow = ControlFlow::Exit;
                 }
                 Event::WindowEvent {
-                    event: WindowEvent::KeyboardInput { device_id, input, is_synthetic },
+                    event: WindowEvent::KeyboardInput { device_id, event, is_synthetic, .. },
                     ..
                 } => {
                     // Handle keyboard shortcuts
-                    if input.state == tao::event::ElementState::Pressed {
+                    if event.state == tao::event::ElementState::Pressed {
                         // This is where we'd handle Ctrl+T, Ctrl+W, etc.
                         // For now, we'll just log the key press
-                        if let Some(keycode) = input.virtual_keycode {
+                        if let Some(keycode) = event.virtual_keycode {
                             println!("Key pressed: {:?}", keycode);
                         }
                     }
