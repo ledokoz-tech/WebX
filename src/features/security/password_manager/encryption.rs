@@ -5,7 +5,6 @@ use aes_gcm::{
 };
 use pbkdf2::pbkdf2;
 use rand::{rngs::OsRng, RngCore};
-use sha2;
 
 /// Password encryption handler
 pub struct PasswordEncryption {
@@ -39,7 +38,7 @@ impl PasswordEncryption {
     }
     pub fn derive_key(password: &str, salt: &[u8]) -> Result<[u8; 32], Box<dyn std::error::Error>> {
         let mut key = [0u8; 32];
-        pbkdf2::<sha2::Sha256>(
+        pbkdf2(
             password.as_bytes(),
             salt,
             100_000,

@@ -38,7 +38,7 @@ impl PasswordManager {
         password: &str,
     ) -> Result<(), Box<dyn std::error::Error>> {
         let encrypted_password = self.encryption.encrypt(password)?;
-        let mut storage = self.storage.lock().unwrap();
+        let storage = self.storage.lock().unwrap();
         storage.save_password(url, username, &encrypted_password)
     }
     

@@ -188,8 +188,8 @@ impl CSSMinifier {
     
     fn needs_space_preserved(&self, prev: Option<char>, next: Option<char>) -> bool {
         match (prev, next) {
-            (Some("div"), Some('.')) => true,  // div.class
-            (Some("div"), Some('#')) => true,  // div#id
+            (Some('d'), Some('.')) => true,  // div.class
+            (Some('d'), Some('#')) => true,  // div#id
             (Some(')'), Some('{')) => true,    // media query
             _ => false,
         }

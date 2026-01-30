@@ -86,7 +86,7 @@ impl BrowserApp {
                     *control_flow = ControlFlow::Exit;
                 }
                 Event::WindowEvent {
-                    event: WindowEvent::KeyboardInput { device_id, event, is_synthetic, .. },
+                    event: WindowEvent::KeyboardInput { device_id: _, event, is_synthetic: _, .. },
                     ..
                 } => {
                     // Handle keyboard shortcuts

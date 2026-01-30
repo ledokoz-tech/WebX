@@ -58,12 +58,13 @@ impl TabManager {
 
     /// Duplicate current tab
     pub fn duplicate_tab(&self) -> Option<usize> {
-        let state = self.state.lock().unwrap();
-        if let Some(active_tab) = state.active_tab() {
-            let new_tab_id = state.next_tab_id;
-            drop(state); // Release lock before calling create_tab
-            
-            Some(self.create_tab(Some(active_tab.url.clone())))
+        let active_url = {
+            let state = self.state.lock().unwrap();
+            state.active_tab().map(|tab| tab.url.clone())
+        };
+        
+        if let Some(url) = active_url {
+            Some(self.create_tab(Some(url)))
         } else {
             None
         }

@@ -87,18 +87,19 @@ impl HTTPCache {
     }
 
     /// Get cached HTTP response
-    pub fn get_response(&mut self, url: &str) -> Option<&HTTPCacheEntry> {
+    pub fn get_response(&mut self, url: &str) -> Option<HTTPCacheEntry> {
         let key = url.to_string();
-        self.cache.get(&key).and_then(|entry| {
-            // Check if expired
-            if let Some(expires) = entry.expires {
-                if chrono::Utc::now() > expires {
-                    self.cache.remove(&url.to_string());
-                    return None;
-                }
+        let entry = self.cache.get(&key)?.clone();
+        
+        // Check if expired
+        if let Some(expires) = entry.expires {
+            if chrono::Utc::now() > expires {
+                self.cache.remove(&key);
+                return None;
             }
-            Some(entry)
-        })
+        }
+        
+        Some(entry)
     }
 
     /// Check if response is cacheable
@@ -139,24 +140,27 @@ impl HTTPCache {
     /// Clear expired entries
     pub fn clear_expired(&mut self) {
         let now = chrono::Utc::now();
-        let urls_to_remove: Vec<String> = self
+        let keys_to_check: Vec<String> = self
             .cache
             .keys_lru_first()
             .iter()
-            .filter_map(|key| {
-                if let Some(entry) = self.cache.get(key) {
-                    if let Some(expires) = entry.expires {
-                        if now > expires {
-                            return Some((**key).clone());
-                        }
+            .map(|key| (**key).clone())
+            .collect();
+            
+        let mut expired_keys = Vec::new();
+            
+        for key in keys_to_check {
+            if let Some(entry) = self.cache.get(&key) {
+                if let Some(expires) = entry.expires {
+                    if now > expires {
+                        expired_keys.push(key);
                     }
                 }
-                None
-            })
-            .collect();
-
-        for url in urls_to_remove {
-            self.cache.remove(&url);
+            }
+        }
+            
+        for key in expired_keys {
+            self.cache.remove(&key);
         }
     }
 
@@ -192,7 +196,7 @@ impl HTTPCache {
         Some(now + chrono::Duration::from_std(self.default_ttl).unwrap())
     }
 
-    fn extract_max_age(&self, cache_control: &str) -> Option<&str> {
+    fn extract_max_age<'a>(&self, cache_control: &'a str) -> Option<&'a str> {
         for directive in cache_control.split(',') {
             let trimmed = directive.trim();
             if trimmed.starts_with("max-age=") {
@@ -213,7 +217,7 @@ impl HTTPCache {
         size
     }
 
-    fn calculate_compression_ratio(&self) -> f64 {
+    fn calculate_compression_ratio(&mut self) -> f64 {
         let mut total_original = 0;
         let mut total_compressed = 0;
 

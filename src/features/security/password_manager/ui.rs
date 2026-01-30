@@ -105,7 +105,7 @@ impl PasswordUI {
     fn generate_secure_password(length: usize) -> String {
         const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
         
-        let mut rng = rand::thread_rng();
+        let rng = rand::thread_rng();
         let mut password = String::with_capacity(length);
         
         for _ in 0..length {

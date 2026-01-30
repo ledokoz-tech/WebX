@@ -191,7 +191,7 @@ impl ThemeManager {
         Ok(())
     }
 
-    fn load_config(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn load_config(&mut self) -> Result<(), Box<dyn std::error::Error>> {
         if self.config_path.exists() {
             let content = std::fs::read_to_string(&self.config_path)?;
             self.config = serde_json::from_str(&content)?;
