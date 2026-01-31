@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@76a93fbab609abe90979db006858b656ceb1c584
+        uses: dtolnay/rust-toolchain@7cebb5c1348fcdd6cc2b3e7d0bf83358b99c839c
         with:
           targets: x86_64-pc-windows-msvc
       
@@ -158,7 +158,7 @@ jobs:
             librsvg2-dev
       
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@76a93fbab609abe90979db006858b656ceb1c584
+        uses: dtolnay/rust-toolchain@7cebb5c1348fcdd6cc2b3e7d0bf83358b99c839c
         with:
           targets: x86_64-unknown-linux-gnu
       
@@ -273,7 +273,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@76a93fbab609abe90979db006858b656ceb1c584
+        uses: dtolnay/rust-toolchain@7cebb5c1348fcdd6cc2b3e7d0bf83358b99c839c
         with:
           targets: x86_64-apple-darwin, aarch64-apple-darwin
       
