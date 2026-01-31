@@ -12,10 +12,10 @@ jobs:
   security-audit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@76a93fbab609abe90979db006858b656ceb1c584
       
       - name: Install cargo-audit
         run: cargo install cargo-audit
