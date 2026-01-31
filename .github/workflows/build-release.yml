@@ -109,7 +109,7 @@ jobs:
               <Fragment>
                   <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
                       <Component Id="MainExecutable" Guid="*">
-                          <File Id="WebXExe" Name="webx.exe" Source="target\x86_64-pc-windows-msvc\release\webx.exe" KeyPath="yes" />
+                          <File Id="WebXExe" Name="webx.exe" Source="..\..\..\target\release\webx.exe" KeyPath="yes" />
                       </Component>
                   </ComponentGroup>
               </Fragment>
@@ -127,7 +127,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path "artifacts"
-          Copy-Item "target\x86_64-pc-windows-msvc\release\webx.exe" "artifacts\webx-${{ needs.prepare-release.outputs.version }}-windows-x64.exe"
+          Copy-Item "target\release\webx.exe" "artifacts\webx-${{ needs.prepare-release.outputs.version }}-windows-x64.exe"
           Copy-Item "packaging\windows\msi\webx.msi" "artifacts\webx-${{ needs.prepare-release.outputs.version }}-windows-x64.msi"
       
       - name: Upload Windows artifacts
