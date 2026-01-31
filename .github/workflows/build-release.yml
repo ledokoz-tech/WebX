@@ -74,15 +74,16 @@ jobs:
           cargo build --release --target x86_64-pc-windows-msvc
       
       - name: Create MSI installer
+        shell: pwsh
         run: |
           # Install WiX Toolset for MSI creation
           choco install wixtoolset -y
           
           # Create basic WiX project structure
-          mkdir -p packaging/windows/msi
+          New-Item -ItemType Directory -Force -Path "packaging\windows\msi"
           
           # Create a simple WiX source file (this would be expanded in a real implementation)
-          cat > packaging/windows/msi/webx.wxs << 'EOF'
+          $wxsContent = @'
           <?xml version="1.0" encoding="UTF-8"?>
           <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
               <Product Id="*" Name="WebX Browser" Language="1033" Version="1.0.0.0" 
@@ -113,18 +114,21 @@ jobs:
                   </ComponentGroup>
               </Fragment>
           </Wix>
-          EOF
+'@
+          
+          Set-Content -Path "packaging\windows\msi\webx.wxs" -Value $wxsContent
           
           # Build MSI
-          cd packaging/windows/msi
+          Set-Location "packaging\windows\msi"
           candle webx.wxs
           light webx.msi
       
       - name: Package artifacts
+        shell: pwsh
         run: |
-          mkdir -p artifacts
-          cp target/x86_64-pc-windows-msvc/release/webx.exe artifacts/webx-${{ needs.prepare-release.outputs.version }}-windows-x64.exe
-          cp packaging/windows/msi/webx.msi artifacts/webx-${{ needs.prepare-release.outputs.version }}-windows-x64.msi
+          New-Item -ItemType Directory -Force -Path "artifacts"
+          Copy-Item "target\x86_64-pc-windows-msvc\release\webx.exe" "artifacts\webx-${{ needs.prepare-release.outputs.version }}-windows-x64.exe"
+          Copy-Item "packaging\windows\msi\webx.msi" "artifacts\webx-${{ needs.prepare-release.outputs.version }}-windows-x64.msi"
       
       - name: Upload Windows artifacts
         uses: actions/upload-artifact@v4
