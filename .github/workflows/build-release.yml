@@ -121,7 +121,7 @@ jobs:
           # Build MSI
           Set-Location "packaging\windows\msi"
           candle webx.wxs
-          light webx.msi
+          light webx.wixobj
       
       - name: Package artifacts
         shell: pwsh
