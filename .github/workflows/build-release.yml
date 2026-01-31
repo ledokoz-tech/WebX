@@ -331,19 +331,34 @@ jobs:
           
           # Make executable
           chmod +x WebX.app/Contents/MacOS/WebX
+          
+          # Verify the app bundle was created
+          ls -la WebX.app/
+          ls -la WebX.app/Contents/
+          ls -la WebX.app/Contents/MacOS/
       
       - name: Create DMG
         run: |
+          # Create artifacts directory
+          mkdir -p artifacts
+          
           # Create DMG
           hdiutil create -volname "WebX Browser" -srcfolder WebX.app -ov -format UDZO artifacts/webx-${{ needs.prepare-release.outputs.version }}-macos-universal.dmg
       
       - name: Package artifacts
         run: |
+          # Ensure artifacts directory exists
           mkdir -p artifacts
+          
           # Copy universal binary
           cp target/release/webx-universal artifacts/webx-${{ needs.prepare-release.outputs.version }}-macos-universal
-          # Copy app bundle
-          cp -r WebX.app artifacts/
+          
+          # Copy app bundle if it exists
+          if [ -d "WebX.app" ]; then
+            cp -r WebX.app artifacts/
+          else
+            echo "Warning: WebX.app not found"
+          fi
       
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
