@@ -114,7 +114,7 @@ jobs:
                   </ComponentGroup>
               </Fragment>
           </Wix>
-'@
+          '@
           
           Set-Content -Path "packaging\windows\msi\webx.wxs" -Value $wxsContent
           
